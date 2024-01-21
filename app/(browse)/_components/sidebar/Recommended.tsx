@@ -1,11 +1,13 @@
 "use client";
 import { useSidebar } from "@/store/use-sidebar";
-import { User } from "@prisma/client";
+import { Stream, User } from "@prisma/client";
 import { Divide } from "lucide-react";
 import { UserItem, UserItemSkeleton } from "./UserItem";
 //User saved with user schema generated locally using npx prisma generate
 interface RecommendedProps {
-  data: User[];
+  data: (User & {
+    stream: { isLive: boolean } | null;
+  })[];
 }
 export const Recommended = ({ data }: RecommendedProps) => {
   const { collapsed } = useSidebar((state) => state);
@@ -23,7 +25,7 @@ export const Recommended = ({ data }: RecommendedProps) => {
             key={user.id}
             username={user.username}
             imageUrl={user.imageUrl}
-            isLive={false}
+            isLive={user.stream?.isLive}
           />
         ))}
       </ul>
